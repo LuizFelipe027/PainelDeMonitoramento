@@ -201,6 +201,7 @@
 <script setup>
 import { ref, onMounted } from 'vue';
 import axios from 'axios';
+import { urlApi } from '../environment';
 
 let index = ref({});
 let statusModal = ref(false);
@@ -230,8 +231,9 @@ function formatarData(dataOriginal) {
 async function contaRegistros() {
 
   try {
+    const url = `${urlApi}/log/allentidades`
     const response = await axios.get(
-      `http://localhost:4011/api/log/allentidades`,
+      url,
       {
         headers: {
           'conecta-supply-api-appkey': 'conecta-supply-key-vlrzks',
@@ -273,8 +275,9 @@ async function contaRegistros() {
 // Função para buscar os logs da API
 async function fetchLogs(entidade) {
   try {
+    const url = `${urlApi}/log/allentidades?entidadeExterna=${entidade?._id || ''}`
     const response = await axios.get(
-      `http://localhost:4011/api/log/allentidades?entidadeExterna=${entidade?._id || ''}`,
+      url,
       {
         headers: {
           'conecta-supply-api-appkey': 'conecta-supply-key-vlrzks',

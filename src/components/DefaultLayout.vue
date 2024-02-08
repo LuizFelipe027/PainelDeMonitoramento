@@ -1,7 +1,7 @@
 <template>
   <AppHeader />
   <main>
-    <div class="max-w-[1200px] mx-auto">
+    <div class="max-w-[1800px] mx-auto">
       <router-view />
     </div>
   </main>

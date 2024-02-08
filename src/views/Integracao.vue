@@ -4,8 +4,8 @@
       <div class="relative mx-4 mt-4 overflow-hidden text-gray-700 bg-white rounded-none bg-clip-border py-3">
         <div class="flex flex-col items-center justify-between gap-4 md:flex-row">
           <div class="block w-full overflow-x-auto md:overflow-hidden md:w-full">
-            <div>
-              <!-- <label for="titleEntidades">Entidades:</label>
+            <!-- <div> -->
+            <!-- <label for="titleEntidades">Entidades:</label>
               <nav v-for="entidade in entidades" class="flex flex-row p-1 rounded-lg bg-blue-gray-50 bg-opacity-60">
                 <ul role="tablist" class="flex flex-wrap items-center space-x-1">
                   <li v-for="objEntidade in entidade" role="tab"
@@ -42,7 +42,7 @@
                 </ul>
               </nav> -->
 
-              <!-- <div class="relative inline-block">
+            <!-- <div class="relative inline-block">
                 <select
                   class="block appearance-none w-full bg-white border border-gray-300 hover:border-gray-400 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline">
                   <option value="opcao1">Opção 1</option>
@@ -57,42 +57,70 @@
                   </svg>
                 </div>
               </div> -->
-              <template>
-                <div>
-                  <label for="mySelect" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Escolha uma
-                    opção</label>
-                  <select id="mySelect" v-model="selectedOption"
-                    class="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                    <option v-for="(option, index) in options" :key="index" :value="option.value">{{ option.label }}
+
+            <!-- <div>
+            <label for="titleEntidades">Entidades:</label>
+              <nav v-for="entidade in entidades" class="flex flex-row p-1 rounded-lg bg-blue-gray-50 bg-opacity-60">
+                <ul role="tablist" class="flex flex-wrap items-center space-x-1">
+                  <li v-for="objEntidade in entidade" role="tab"
+                    class="mx-1 relative flex items-center justify-center  px-2 py-1 font-sans antialiased font-normal leading-relaxed text-center bg-transparent cursor-pointer select-none text-blue-gray-900"
+                    data-value="all">
+                    <div class="z-20 text-inherit" v-on:click="fetchIntegracoes(objEntidade)">
+                      &nbsp;&nbsp;{{ objEntidade.nome }}&nbsp;{{ objEntidade.quantidade }}&nbsp;&nbsp;
+                    </div>
+                    <div class="absolute inset-0 z-10 h-full bg-white rounded-md shadow"></div>
+                  </li>
+                </ul>
+              </nav>
+            </div>
+            <div>
+            -->
+
+
+            <div class="flex flex-row">
+              <div class="max-w-40 flex flex-col">
+                <label class="text-black font-bold" for="titleEntidades">Status:</label>
+                <nav class="flex flex-row p-1 rounded-lg bg-blue-gray-50 bg-opacity-60">
+                  <select id="entidades" class="border-none" v-model="integracaoSelecionada" @change="fetchIntegracoes">
+                    <option v-for="(integracao, index) in statusIntegracoes" :key="index" :value="integracao.status">
+                      {{ integracao.nomeStatus }}
                     </option>
                   </select>
-                </div>
-              </template>
-
-
-              <label for="entidades" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Entidade</label>
-              <select id="entidades" 
-                class="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-
-
-                <option v-for="(entidade, index) in statusIntegracoes" :key="index" :value="entidade.status">{{ entidade.status }}</option>
-
-                <!-- <option selected>Choose a country</option>
-                <option value="US">United States</option>
-                <option value="CA">Canada</option>
-                <option value="FR">France</option>
-                <option value="DE">Germany</option> -->
-              </select>
-
+                </nav>
+              </div>
+              <div class="max-w-40  flex flex-col">
+                <label class="text-black font-bold" for="titleEntidades">Entidade:</label>
+                <nav class="flex flex-row p-1 rounded-lg bg-blue-gray-50 bg-opacity-60">
+                  <select id="entidades" class="border-none" v-model="entidadeSelecionada" @change="fetchIntegracoes">
+                    <option v-for="(entidade, index) in entidades" :key="index" :value="entidade._id">
+                      {{ entidade.nome }}
+                    </option>
+                  </select>
+                </nav>
+              </div>
             </div>
+
+            <!-- </div> -->
           </div>
         </div>
       </div>
       <!-- <div class="overflow-x-auto"> -->
-      <div class="overflow-x-auto" style="height: 29.5rem;">
+      <div class="overflow-x-auto" style="height: 70vh;">
         <table class="w-full text-left table-auto min-w-max">
           <thead class="sticky top-0 bg-white">
             <tr>
+              <th
+                class="p-4 transition-colors cursor-pointer border-y border-blue-gray-100 bg-blue-gray-50/50 hover:bg-blue-gray-50">
+                <p
+                  class="flex items-center justify-between gap-2 font-sans antialiased font-normal leading-none text-blue-gray-900 opacity-70">
+                  Status
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
+                    stroke="currentColor" aria-hidden="true" class="w-4 h-4">
+                    <path stroke-linecap="round" stroke-linejoin="round"
+                      d="M8.25 15L12 18.75 15.75 15m-7.5-6L12 5.25 15.75 9"></path>
+                  </svg>
+                </p>
+              </th>
               <th
                 class="px-3 py-2 transition-colors cursor-pointer border-y border-blue-gray-100 bg-blue-gray-50/50 hover:bg-blue-gray-50">
                 <p
@@ -229,18 +257,6 @@
                 class="p-4 transition-colors cursor-pointer border-y border-blue-gray-100 bg-blue-gray-50/50 hover:bg-blue-gray-50">
                 <p
                   class="flex items-center justify-between gap-2 font-sans antialiased font-normal leading-none text-blue-gray-900 opacity-70">
-                  Status
-                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
-                    stroke="currentColor" aria-hidden="true" class="w-4 h-4">
-                    <path stroke-linecap="round" stroke-linejoin="round"
-                      d="M8.25 15L12 18.75 15.75 15m-7.5-6L12 5.25 15.75 9"></path>
-                  </svg>
-                </p>
-              </th>
-              <th
-                class="p-4 transition-colors cursor-pointer border-y border-blue-gray-100 bg-blue-gray-50/50 hover:bg-blue-gray-50">
-                <p
-                  class="flex items-center justify-between gap-2 font-sans antialiased font-normal leading-none text-blue-gray-900 opacity-70">
                   Ult.Atu.
                   <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
                     stroke="currentColor" aria-hidden="true" class="w-4 h-4">
@@ -253,6 +269,19 @@
           </thead>
           <tbody style="max-height: 25rem;">
             <tr v-for="integracao in integracoes" class="border-b transition duration-300 ease-in-out">
+              <td class="whitespace-nowrap px-3 py-2" :title="integracao.status">
+                <span v-if="integracao.status === 'concluido'"
+                  class="inline-block h-4 w-4 rounded-full bg-green-500"></span>
+                <span v-else-if="integracao.status === 'inativo'"
+                  class="inline-block h-4 w-4 rounded-full bg-grey-500"></span>
+                <span v-else-if="integracao.status === 'naoiniciado'"
+                  class="inline-block h-4 w-4 rounded-full bg-blue-500"></span>
+                <span v-else-if="integracao.status === 'parado'"
+                  class="inline-block h-4 w-4 rounded-full bg-red-500"></span>
+                <span v-else-if="integracao.status === 'emexecucao'"
+                  class="inline-block h-4 w-4 rounded-full bg-yellow-500"></span>
+                <span v-else>{{ integracao.status }}</span>
+              </td>
               <td class="whitespace-nowrap px-3 py-2">{{ integracao.entidade.nome }}</td>
               <td class="whitespace-nowrap px-3 py-2">{{ integracao.grupoeconomico.nome }}</td>
               <td class="whitespace-nowrap px-3 py-2">{{ integracao.funcao }}</td>
@@ -264,7 +293,8 @@
               <td class="whitespace-nowrap px-3 py-2">{{ integracao.qtdAtualizado }}</td>
               <td class="whitespace-nowrap px-3 py-2">{{ integracao.dataInicio }}</td>
               <td class="whitespace-nowrap px-3 py-2">{{ integracao.dataFim }}</td>
-              <td class="whitespace-nowrap px-3 py-2">{{ integracao.status }}</td>
+              <!-- <td class="whitespace-nowrap px-3 py-2">{{ integracao.status }}</td> -->
+              
               <td class="whitespace-nowrap px-3 py-2">{{ integracao.ultimaAtualizacao }}</td>
             </tr>
           </tbody>
@@ -277,6 +307,7 @@
 <script setup>
 import { ref, onMounted } from 'vue';
 import axios from 'axios';
+import { urlApi } from '../environment';
 
 const integracoes = ref([]);
 const entidades = ref([]);
@@ -284,6 +315,8 @@ const entidadesContador = ref([]);
 const statusContador = ref([]);
 const statusIntegracoes = ref([]);
 const totalIntegracoes = ref(0);
+const integracaoSelecionada = ref('');
+const entidadeSelecionada = ref('');
 let filtroAuxiliar = '';
 
 
@@ -302,52 +335,54 @@ function formatarData(dataOriginal) {
 }
 
 // Função para atualizar o contador de entidades
-async function contaStatus() {
+// async function contaStatus() {
 
-  try {
-    const response = await axios.get(
-      `http://localhost:4011/api/integracao/allentidades`,
-      {
-        headers: {
-          'conecta-supply-api-appkey': 'conecta-supply-key-vlrzks',
-          'conecta-supply-api-apptoken': 'GjbH5dDYhZgoqT16GGLAUsJDI4BGsA3WH5tB6XncKrqZbfVFKu',
-          'Content-Type': 'application/json'
-        }
-      }
-    );
-    statusContador.value = [];
-    response.data.forEach(integracao => {
-      const pos = statusContador.value.findIndex(fi => fi.status === integracao.status);
-      if (pos === -1) {
-        statusContador.value.push({
-          status: integracao.status,
-          quantidade: 1,
-          // grupoeconomico: log.grupoeconomico._id
-        })
-      } else {
-        statusContador.value[pos].quantidade++;
-      }
-    });
-    // Limpar array antes de adicionar novos valores
-    statusIntegracoes.value = [];
-    for (const entidadeContador of statusContador.value) {
-      statusIntegracoes.value.push({
-        status: entidadeContador.status,
-        quantidade: entidadeContador.quantidade
+//   try {
+//     const url = `${urlApi}/integracao/allentidades`
+//     const response = await axios.get(
+//       url,
+//       {
+//         headers: {
+//           'conecta-supply-api-appkey': 'conecta-supply-key-vlrzks',
+//           'conecta-supply-api-apptoken': 'GjbH5dDYhZgoqT16GGLAUsJDI4BGsA3WH5tB6XncKrqZbfVFKu',
+//           'Content-Type': 'application/json'
+//         }
+//       }
+//     );
+//     statusContador.value = [];
+//     response.data.forEach(integracao => {
+//       const pos = statusContador.value.findIndex(fi => fi.status === integracao.status);
+//       if (pos === -1) {
+//         statusContador.value.push({
+//           status: integracao.status,
+//           quantidade: 1,
+//           // grupoeconomico: log.grupoeconomico._id
+//         })
+//       } else {
+//         statusContador.value[pos].quantidade++;
+//       }
+//     });
+//     // Limpar array antes de adicionar novos valores
+//     statusIntegracoes.value = [];
+//     for (const entidadeContador of statusContador.value) {
+//       statusIntegracoes.value.push({
+//         status: entidadeContador.status,
+//         quantidade: entidadeContador.quantidade
 
-      });
-    }
-  } catch (error) {
-    console.error(error);
-  }
-}
+//       });
+//     }
+//   } catch (error) {
+//     console.error(error);
+//   }
+// }
 
 // Função para atualizar o contador de entidades
 async function contaRegistros() {
 
   try {
+    const url = `${urlApi}/integracao/allentidades`
     const response = await axios.get(
-      `http://localhost:4011/api/integracao/allentidades`,
+      url,
       {
         headers: {
           'conecta-supply-api-appkey': 'conecta-supply-key-vlrzks',
@@ -356,45 +391,49 @@ async function contaRegistros() {
         }
       }
     );
-    entidadesContador.value = [];
-    totalIntegracoes.value = 0;
-    response.data.forEach(integracao => {
-      const pos = entidadesContador.value.findIndex(fi => fi._id === integracao.entidade._id);
-      if (pos === -1) {
-        entidadesContador.value.push({
-          _id: integracao.entidade._id,
-          nome: integracao.entidade.nome,
-          quantidade: 1,
-        })
-      } else {
-        entidadesContador.value[pos].quantidade++;
+    entidades.value = response.data.reduce((acc, m) => {
+      // Verifica se o nome já existe na lista de entidades
+      const exists = acc.some(entidade => entidade.nome === m.entidade.nome);
+      // Se o nome não existir na lista, adiciona à lista de entidades
+      if (!exists) {
+        acc.push({ nome: m.entidade.nome, _id: m.entidade._id });
       }
-    });
-    // Limpar array antes de adicionar novos valores
-    entidades.value = [[{
-      nome: 'Todas',
-      quantidade: totalIntegracoes.value
-    }]];
-    let i = 0;
-    for (const entidadeContador of entidadesContador.value) {
+      return acc;
+    }, [{ nome: 'Selecione', _id: '' }]);
 
-      if (entidades.value[i].length <= 7) {
-        entidades.value[i].push({
-          nome: entidadeContador.nome,
-          quantidade: entidadeContador.quantidade,
-          _id: entidadeContador._id
-        });
-      } else {
-        i++
-        entidades.value.push([])
-        entidades.value[i].push({
-          nome: entidadeContador.nome,
-          quantidade: entidadeContador.quantidade,
-          _id: entidadeContador._id
+    statusIntegracoes.value = response.data.reduce((acc, m) => {
+      // Verifica se o nome já existe na lista de entidades
+      const exists = acc.some(integracao => integracao.status === m.status);
+      // Se o nome não existir na lista, adiciona à lista de integracaos
+      if (!exists) {
+        let nomeStatus = '';
+        switch (m.status) {
+          case 'naoiniciado':
+            nomeStatus = 'Não Iniciado';
+            break;
+          case 'parado':
+            nomeStatus = 'Parado';
+            break;
+          case 'emexecucao':
+            nomeStatus = 'Em Execução';
+            break;
+          case 'concluido':
+            nomeStatus = 'Concluído';
+            break;
+          case 'inativo':
+            nomeStatus = 'Inativo';
+            break;
+          default:
+            break;
+        }
+        acc.push({
+          nomeStatus: nomeStatus,
+          status: m.status
         });
       }
-      entidades.value[0][0].quantidade += entidadeContador.quantidade
-    }
+      return acc;
+    }, [{ nomeStatus: 'Selecione', status: '' }]);
+
 
   } catch (error) {
     console.error(error);
@@ -404,16 +443,7 @@ async function contaRegistros() {
 // Função para buscar os integracoes da API
 async function fetchIntegracoes(filtro) {
 
-  console.log("filtro: ", filtro)
-
-  console.log("filtroAuxiliar: ", filtroAuxiliar)
-  filtroAuxiliar = filtro
-
-
-
-  let url = `http://localhost:4011/api/integracao/allentidades?entidadeExterna=${filtro?._id || ''}&status=${filtro?.status || ''}`
-
-
+  let url = `${urlApi}/integracao/allentidades?entidadeExterna=${entidadeSelecionada.value || ''}&status=${integracaoSelecionada?.value || ''}`
   try {
     const response = await axios.get(
       url,
@@ -438,6 +468,6 @@ async function fetchIntegracoes(filtro) {
 
 onMounted(fetchIntegracoes);
 onMounted(contaRegistros);
-onMounted(contaStatus);
-setInterval(contaStatus, 10000);
+// onMounted(contaStatus);
+// setInterval(contaStatus, 10000);
 </script>     
