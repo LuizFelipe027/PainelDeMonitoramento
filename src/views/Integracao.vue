@@ -1,4 +1,4 @@
-<template >
+<template>
   <div class="container mx-sm flex flex-col text-xs">
     <div class="relative flex flex-col w-full h-full text-gray-700 bg-white shadow-md rounded-xl bg-clip-border my-10">
       <div class="relative mx-4 mt-4 overflow-hidden text-gray-700 bg-white rounded-none bg-clip-border py-3">
@@ -294,7 +294,7 @@
               <td class="whitespace-nowrap px-3 py-2">{{ integracao.dataInicio }}</td>
               <td class="whitespace-nowrap px-3 py-2">{{ integracao.dataFim }}</td>
               <!-- <td class="whitespace-nowrap px-3 py-2">{{ integracao.status }}</td> -->
-              
+
               <td class="whitespace-nowrap px-3 py-2">{{ integracao.ultimaAtualizacao }}</td>
             </tr>
           </tbody>
@@ -318,6 +318,7 @@ const totalIntegracoes = ref(0);
 const integracaoSelecionada = ref('');
 const entidadeSelecionada = ref('');
 let filtroAuxiliar = '';
+let abaAtiva = ref(true);
 
 
 function formatarData(dataOriginal) {
@@ -461,13 +462,46 @@ async function fetchIntegracoes(filtro) {
       integracao.dataFim = integracao.dataFim ? formatarData(integracao.dataFim) : '';
       integracao.ultimaAtualizacao = integracao.ultimaAtualizacao ? formatarData(integracao.ultimaAtualizacao) : '';
     })
+
+    // Defina a ordem desejada dos status
+    const order = {
+      "emexecucao": 0,
+      "parado": 1,
+      "concluido": 2,
+      "naoiniciado": 3
+    };
+
+    // Ordenar o array de acordo com o status
+    integracoes.value.sort((a, b) => {
+      return order[a.status] - order[b.status];
+    });
+
   } catch (error) {
     console.error(error);
   }
 };
 
-onMounted(fetchIntegracoes);
-onMounted(contaRegistros);
-// onMounted(contaStatus);
-// setInterval(contaStatus, 10000);
-</script>     
+async function atualizarConteudo() {
+  fetchIntegracoes();
+  contaRegistros();
+}
+
+// Evento para verificar a mudança de visibilidade da aba
+document.addEventListener("visibilitychange", () => {
+  abaAtiva = !document.hidden;
+  if (abaAtiva && window.location.pathname === '/integracoes') {
+    // Se a aba tornou-se visível, atualize o conteúdo imediatamente
+    atualizarConteudo();
+  }
+});
+
+setInterval(() => {
+  console.log(abaAtiva);
+  // Verificar se a aba está ativa
+  if (abaAtiva && window.location.pathname === '/integracoes') {
+    atualizarConteudo();
+  }
+}, 5000);
+
+onMounted(atualizarConteudo);
+</script>

@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory } from "vue-router";
 import DefaultLayout from '../components/DefaultLayout.vue';
 import GuestLayout from '../components/GuestLayout.vue';
+import Home from '../views/Home.vue';
 import Logs from '../views/Logs.vue';
 import Integracao from '../views/Integracao.vue';
 
@@ -10,6 +11,11 @@ const routes = [
     path: '/',
     component: DefaultLayout,
     children: [
+      {
+        path: "/",
+        name: "home",
+        component: Home,
+      },
       {
         path: "/logs",
         name: "logs",

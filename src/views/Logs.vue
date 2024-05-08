@@ -1,4 +1,4 @@
-<template >
+<template>
   <div class="container mx-sm flex flex-col">
     <div class="relative flex flex-col w-full h-full text-gray-700 bg-white shadow-md rounded-xl bg-clip-border my-10">
       <div class="relative mx-4 mt-4 overflow-hidden text-gray-700 bg-white rounded-none bg-clip-border py-3">
@@ -28,7 +28,8 @@
         </div>
       </div>
       <div class="overflow-x-auto">
-        <div class="overflow-y-auto" style="height: 29.5rem;"> <!-- Defina a altura máxima que desejar, por exemplo, max-h-80 -->
+        <div class="overflow-y-auto" style="height: 29.5rem;">
+          <!-- Defina a altura máxima que desejar, por exemplo, max-h-80 -->
           <table class="w-full text-left table-auto min-w-max">
             <thead class="sticky top-0 bg-white">
               <tr>
@@ -209,6 +210,7 @@ const logs = ref([]);
 const entidades = ref([]);
 const entidadesContador = ref([]);
 const totalLogs = ref(0);
+let abaAtiva = ref(true);
 
 const toggleModal = (indexx) => {
   index.value = indexx
@@ -222,14 +224,17 @@ function formatarData(dataOriginal) {
   const dia = String(data.getDate()).padStart(2, '0');
   const mes = String(data.getMonth() + 1).padStart(2, '0');
   const ano = data.getFullYear();
+  //Extrai hora
+  const hora = String(data.getHours()).padStart(2, '0');;
+  const minutos = String(data.getMinutes()).padStart(2, '0');;
+  const segundos = String(data.getSeconds()).padStart(2, '0');;
   // Formate a data no formato desejado (dd/mm/aaaa)
-  const dataFormatada = `${dia}/${mes}/${ano}`;
+  const dataFormatada = `${dia}/${mes}/${ano} ${hora}:${minutos}:${segundos}`;
   return dataFormatada;
 }
 
 // Função para atualizar o contador de entidades
 async function contaRegistros() {
-
   try {
     const url = `${urlApi}/log/allentidades`
     const response = await axios.get(
@@ -293,6 +298,28 @@ async function fetchLogs(entidade) {
   }
 };
 
-onMounted(fetchLogs);
-onMounted(contaRegistros);
-</script>     
+async function atualizarConteudo() {
+  fetchLogs();
+  contaRegistros();
+}
+
+// Evento para verificar a mudança de visibilidade da aba
+document.addEventListener("visibilitychange", () => {
+  abaAtiva = !document.hidden;
+  if (abaAtiva && window.location.pathname === '/logs') {
+    // Se a aba tornou-se visível, atualize o conteúdo imediatamente
+    atualizarConteudo();
+  }
+});
+
+setInterval(() => {
+  console.log(abaAtiva);
+  // Verificar se a aba está ativa
+  if (abaAtiva && window.location.pathname === '/logs') {
+    atualizarConteudo();
+  }
+}, 5000);
+// onMounted(fetchLogs);
+// onMounted(contaRegistros);
+onMounted(atualizarConteudo);
+</script>
