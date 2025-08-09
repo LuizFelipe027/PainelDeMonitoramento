@@ -496,7 +496,6 @@ document.addEventListener("visibilitychange", () => {
 });
 
 setInterval(() => {
-  console.log(abaAtiva);
   // Verificar se a aba está ativa
   if (abaAtiva && window.location.pathname === '/integracoes') {
     atualizarConteudo();

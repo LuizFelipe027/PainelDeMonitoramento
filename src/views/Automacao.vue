@@ -1,7 +1,6 @@
 <template>
   <div class="container mx-sm flex flex-col text-xs">
-    <div class="relative flex flex-col w-[90%] h-full mx-auto text-gray-700 bg-white shadow-md rounded-xl bg-clip-border my-10">
-
+   <div class="relative flex flex-col w-[90%] max-w-full h-full mx-auto text-gray-700 bg-white shadow-md rounded-xl bg-clip-border my-10 overflow-x-auto">
       <!-- Header / Controls -->
       <div class="relative mx-4 mt-4 overflow-hidden text-gray-700 bg-white rounded-none bg-clip-border py-3">
         <div class="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
@@ -41,13 +40,14 @@
             <span class="mr-2">{{ collapsed.parado ? '▶' : '▼' }}</span> 🚨 Paradas
             <span class="ml-2 text-[10px] px-2 py-0.5 rounded bg-red-100 text-red-700">{{ grupos.parado.length }}</span>
           </button>
-          <div v-if="!collapsed.parado" class="border rounded-md">
+          <div v-if="!collapsed.parado" class="border rounded-md overflow-x-auto">
             <table class="w-full text-left table-auto">
               <thead class="sticky top-0 bg-white text-[11px]">
                 <tr class="border-b">
                   <th class="px-3 py-2">Status</th>
                   <th class="px-3 py-2">Entidade</th>
                   <th class="px-3 py-2">Nome</th>
+                  <th class="px-3 py-2">Progresso</th>
                   <th class="px-3 py-2">Próx.Exec.</th>
                   <th class="px-3 py-2">Dt.Iní.</th>
                   <th class="px-3 py-2">Dt.Fim</th>
@@ -61,6 +61,7 @@
                   </td>
                   <td class="whitespace-nowrap px-3 py-2">{{ a.entidade?.nome || '-' }}</td>
                   <td class="whitespace-nowrap px-3 py-2 font-medium">{{ a.nome }}</td>
+                  <td class="whitespace-nowrap px-3 py-2 font-medium">{{ a.progresso }}%</td>
                   <td class="whitespace-nowrap px-3 py-2">{{ formatDateTime(a.proximaExecucao) }}</td>
                   <td class="whitespace-nowrap px-3 py-2">{{ formatDateTime(a.dataInicio) }}</td>
                   <td class="whitespace-nowrap px-3 py-2">{{ formatDateTime(a.dataFim) }}</td>
@@ -81,13 +82,14 @@
             <span class="ml-2 text-[10px] px-2 py-0.5 rounded bg-yellow-100 text-yellow-800">{{ grupos.emexecucao.length
               }}</span>
           </button>
-          <div v-if="!collapsed.emexecucao" class="border rounded-md">
+          <div v-if="!collapsed.emexecucao" class="border rounded-md overflow-x-auto">
             <table class="w-full text-left table-auto">
               <thead class="sticky top-0 bg-white text-[11px]">
                 <tr class="border-b">
                   <th class="px-3 py-2">Status</th>
                   <th class="px-3 py-2">Entidade</th>
                   <th class="px-3 py-2">Nome</th>
+                  <th class="px-3 py-2">Progresso</th>
                   <th class="px-3 py-2">Próx.Exec.</th>
                   <th class="px-3 py-2">Dt.Iní.</th>
                   <th class="px-3 py-2">Dt.Fim</th>
@@ -101,6 +103,7 @@
                   </td>
                   <td class="whitespace-nowrap px-3 py-2">{{ a.entidade?.nome || '-' }}</td>
                   <td class="whitespace-nowrap px-3 py-2 font-medium">{{ a.nome }}</td>
+                  <td class="whitespace-nowrap px-3 py-2 font-medium">{{ a.progresso }}%</td>
                   <td class="whitespace-nowrap px-3 py-2">{{ formatDateTime(a.proximaExecucao) }}</td>
                   <td class="whitespace-nowrap px-3 py-2">{{ formatDateTime(a.dataInicio) }}</td>
                   <td class="whitespace-nowrap px-3 py-2">{{ formatDateTime(a.dataFim) }}</td>
@@ -121,13 +124,14 @@
             <span class="ml-2 text-[10px] px-2 py-0.5 rounded bg-green-100 text-green-800">{{ grupos.concluido.length
               }}</span>
           </button>
-          <div v-if="!collapsed.concluido" class="border rounded-md">
+          <div v-if="!collapsed.concluido" class="border rounded-md overflow-x-auto ">
             <table class="w-full text-left table-auto">
               <thead class="sticky top-0 bg-white text-[11px]">
                 <tr class="border-b">
                   <th class="px-3 py-2">Status</th>
                   <th class="px-3 py-2">Entidade</th>
                   <th class="px-3 py-2">Nome</th>
+                  <th class="px-3 py-2">Progresso</th>
                   <th class="px-3 py-2">Próx.Exec.</th>
                   <th class="px-3 py-2">Dt.Iní.</th>
                   <th class="px-3 py-2">Dt.Fim</th>
@@ -141,6 +145,7 @@
                   </td>
                   <td class="whitespace-nowrap px-3 py-2">{{ a.entidade?.nome || '-' }}</td>
                   <td class="whitespace-nowrap px-3 py-2 font-medium">{{ a.nome }}</td>
+                  <td class="whitespace-nowrap px-3 py-2 font-medium">{{ a.progresso }}%</td>
                   <td class="whitespace-nowrap px-3 py-2">{{ formatDateTime(a.proximaExecucao) }}</td>
                   <td class="whitespace-nowrap px-3 py-2">{{ formatDateTime(a.dataInicio) }}</td>
                   <td class="whitespace-nowrap px-3 py-2">{{ formatDateTime(a.dataFim) }}</td>
@@ -161,13 +166,14 @@
 <script setup>
   import { ref, reactive, computed, onMounted, onBeforeUnmount, watch } from 'vue'
   import axios from 'axios'
+  import { urlApi } from '../environment';
 
   /**
    * Ajuste este endpoint para o ambiente de produção/homologação.
    * No app móvel você usa /api/automacao/parada; aqui manteremos o mesmo.
    * Se preferir, extraia para um arquivo environment.
    */
-  const API_URL = 'https://api.kenitsupply.com.br/api/automacao/parada'
+  const API_URL = `${urlApi}/automacao/parada`
 
   const HEADERS = {
     'conecta-supply-api-appkey': 'conecta-supply-key-vlrzks',
