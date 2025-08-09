@@ -1,6 +1,6 @@
 <template>
   <div class="container mx-sm flex flex-col">
-    <div class="relative flex flex-col w-full h-full text-gray-700 bg-white shadow-md rounded-xl bg-clip-border my-10">
+   <div class="relative flex flex-col w-[90%] max-w-full h-full mx-auto text-gray-700 bg-white shadow-md rounded-xl bg-clip-border my-10 overflow-x-auto">
       <div class="relative mx-4 mt-4 overflow-hidden text-gray-700 bg-white rounded-none bg-clip-border py-3">
         <div class="flex flex-col items-center justify-between gap-4 md:flex-row">
           <div class="block w-full overflow-hidden md:w-max">
