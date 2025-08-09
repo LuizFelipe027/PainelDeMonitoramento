@@ -9,5 +9,8 @@
     <router-link :to="{ name: 'integracoes' }" class="inline-flex items-center h-full px-5 text-white font-bold">
       Integração
     </router-link>
+    <router-link :to="{ name: 'automacoes' }" class="inline-flex items-center h-full px-5 text-white font-bold">
+      Automação
+    </router-link>
   </header>
 </template>

@@ -4,6 +4,7 @@ import GuestLayout from '../components/GuestLayout.vue';
 import Home from '../views/Home.vue';
 import Logs from '../views/Logs.vue';
 import Integracao from '../views/Integracao.vue';
+import Automacao from '../views/Automacao.vue';
 
 
 const routes = [
@@ -26,26 +27,11 @@ const routes = [
         name: "integracoes",
         component: Integracao,
       },
-      // {
-      //   path: "/by-letter/:letter?",
-      //   name: "byLetter",
-      //   component: MealsByLetter,
-      // },
-      // {
-      //   path: "/ingredients",
-      //   name: "ingredients",
-      //   component: Ingredients,
-      // },
-      // {
-      //   path: "/by-ingredient/:ingredient",
-      //   name: "byIngredient",
-      //   component: MealsByIngredient,
-      // },
-      // {
-      //   path: '/meal/:id',
-      //   name: 'mealDetails',
-      //   component: MealDetails
-      // }
+      {
+        path: "/automacoes",
+        name: "automacoes",
+        component: Automacao,
+      },
     ]
   },
   {
